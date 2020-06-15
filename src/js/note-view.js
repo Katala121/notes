@@ -14,10 +14,10 @@ class NoteView extends EventEmitter {
     this.createButton.addEventListener('click', this.onCreateNewClick.bind(this));
   }
 
-  init(notes = []) {
+  init(notes = [], id = null) {
     this.renderSidebar(notes);
-
-    this.setNote(notes[0]);
+    const noteIndex = notes.findIndex((item) => (item.id === id));
+    this.setNote(notes[noteIndex]);
   }
 
   /**

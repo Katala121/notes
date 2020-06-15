@@ -10,7 +10,8 @@ class NoteModel {
     // this.notes = [];
     // localStorage.setItem('notes', JSON.stringify([]));
 
-    this.selectedItemId = null;
+    // this.selectedItemId = null;
+    // localStorage.setItem('currentNote', JSON.stringify(null));
   }
 
   get notes() {
@@ -18,11 +19,11 @@ class NoteModel {
   }
 
   get SelectedItemId() {
-    return this.selectedItemId;
+    return JSON.parse(localStorage.getItem('currentNote'));
   }
 
   set SelectedItemId(id) {
-    this.selectedItemId = id;
+    localStorage.setItem('currentNote', JSON.stringify(id));
   }
 
   /**
@@ -65,6 +66,9 @@ class NoteModel {
     let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
     const noteIndex = localStorageNotes.findIndex((item) => (item.id === note.id));
     localStorageNotes.splice(noteIndex, 1);
+    if(localStorageNotes.length == 0) {
+      localStorageNotes.unshift(createEmptyNote());
+    }
     localStorage.setItem('notes', JSON.stringify(localStorageNotes));
     // const noteIndex = this.notes.findIndex((item) => (item.id === note.id));
 
@@ -79,8 +83,10 @@ class NoteModel {
    */
   load() {
     let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
-    localStorageNotes.unshift(createEmptyNote());
-    localStorage.setItem('notes', JSON.stringify(localStorageNotes));
+    if(localStorageNotes.length == 0) {
+      localStorageNotes.unshift(createEmptyNote());
+      localStorage.setItem('notes', JSON.stringify(localStorageNotes));
+    }
     // this.notes.unshift(createEmptyNote());
 
     return localStorageNotes;

@@ -32,10 +32,11 @@ class NoteController {
 
   init() {
     const notes = this.model.load();
+    const id = this.model.SelectedItemId;
 
-    this.view.init(notes);
+    this.view.init(notes, id);
 
-    this.model.SelectedItemId = this.model.notes[0];
+    // this.model.SelectedItemId = this.model.notes[0];
   }
 
   /**
@@ -46,6 +47,7 @@ class NoteController {
   remove(note) {
     if (note.id === this.model.SelectedItemId) {
       this.view.hideTextarea();
+      this.model.SelectedItemId = null;
     }
 
     this.model.remove(note);
