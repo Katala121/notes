@@ -7,9 +7,14 @@ const createEmptyNote = () => ({
 
 class NoteModel {
   constructor() {
-    this.notes = [];
+    // this.notes = [];
+    // localStorage.setItem('notes', JSON.stringify([]));
 
     this.selectedItemId = null;
+  }
+
+  get notes() {
+    return JSON.parse(localStorage.getItem('notes'));
   }
 
   get SelectedItemId() {
@@ -27,8 +32,13 @@ class NoteModel {
    */
   create() {
     const newNote = createEmptyNote();
+    let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
+    // console.log(newNote);
+    localStorageNotes.unshift(newNote);
+    // console.log(localStorageNotes);
+    localStorage.setItem('notes', JSON.stringify(localStorageNotes));
 
-    this.notes.unshift(newNote);
+    // this.notes.unshift(newNote);
 
     return newNote;
   }
@@ -39,7 +49,10 @@ class NoteModel {
    * @param {{ id: string; text: string; }} note 
    */
   update(note) {
-    this.notes = this.notes.map((item) => (item.id === note.id ? note : item));
+    let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
+    localStorageNotes = localStorageNotes.map((item) => (item.id === note.id ? note : item));
+    localStorage.setItem('notes', JSON.stringify(localStorageNotes));
+    // this.notes = this.notes.map((item) => (item.id === note.id ? note : item));
   }
 
 
@@ -49,9 +62,13 @@ class NoteModel {
    * @param {{ id: string; text: string; }} note 
    */
   remove(note) {
-    const noteIndex = this.notes.findIndex((item) => (item.id === note.id));
+    let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
+    const noteIndex = localStorageNotes.findIndex((item) => (item.id === note.id));
+    localStorageNotes.splice(noteIndex, 1);
+    localStorage.setItem('notes', JSON.stringify(localStorageNotes));
+    // const noteIndex = this.notes.findIndex((item) => (item.id === note.id));
 
-    this.notes.splice(noteIndex, 1);
+    // this.notes.splice(noteIndex, 1);
   }
 
 
@@ -61,9 +78,12 @@ class NoteModel {
    * @returns {Array.<{id: string; text: string;}>}
    */
   load() {
-    this.notes.unshift(createEmptyNote());
+    let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
+    localStorageNotes.unshift(createEmptyNote());
+    localStorage.setItem('notes', JSON.stringify(localStorageNotes));
+    // this.notes.unshift(createEmptyNote());
 
-    return this.notes;
+    return localStorageNotes;
   }
 
 }
