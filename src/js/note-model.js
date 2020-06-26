@@ -34,9 +34,7 @@ class NoteModel {
   create() {
     const newNote = createEmptyNote();
     let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
-    // console.log(newNote);
     localStorageNotes.unshift(newNote);
-    // console.log(localStorageNotes);
     localStorage.setItem('notes', JSON.stringify(localStorageNotes));
 
     // this.notes.unshift(newNote);
@@ -83,9 +81,13 @@ class NoteModel {
    */
   load() {
     let localStorageNotes = JSON.parse(localStorage.getItem('notes'));
-    if(localStorageNotes.length == 0) {
-      localStorageNotes.unshift(createEmptyNote());
+    if( localStorageNotes == undefined) {
+      localStorage.setItem('notes', JSON.stringify([]));      
+      localStorageNotes = JSON.parse(localStorage.getItem('notes'));
+      let emptyNote = createEmptyNote();
+      localStorageNotes.unshift(emptyNote);
       localStorage.setItem('notes', JSON.stringify(localStorageNotes));
+      localStorage.setItem('currentNote', JSON.stringify(emptyNote.id));
     }
     // this.notes.unshift(createEmptyNote());
 
